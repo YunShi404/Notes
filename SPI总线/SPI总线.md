@@ -261,4 +261,14 @@ DMA是独立于CPU的一个硬件控制器，在这里，DMA方式可以承担�
 
 Generate code！
 
-然后函数就是把_IT换成_DMA，其他没什么。
+然后函数就是把_IT换成_DMA。
+
+### 使用 DMA 的要求
+
+以上是MX和API，下面讲一下使用DMA的要求
+
+不同的DMA能访问到的内存区域不同
+
+<p align="center"><img src="images/34-SPI与DMA内存访问范围.png" alt="34 SPI与DMA内存访问范围" width="900"></p>
+
+要记得用正确的地址。
