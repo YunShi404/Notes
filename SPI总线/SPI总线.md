@@ -189,7 +189,7 @@ CPU不用一直被阻塞，可以节省出一部分时间处理其他任务。
 
 下面学习DMA方式
 
-DMA是独立于CPU的一个硬件控制器，在这里，DMA方式可以承担起在内存和外设数据寄存器（DR）之间搬运数据的功能。H7系列共有4个DMA，SPI可以使用DMA1和DMA2.
+DMA是独立于CPU的一个硬件控制器，在这里，DMA方式可以承担起在内存和外设数据寄存器（DR）之间搬运数据的功能。H7系列共有4个DMA，各SPI允许使用的DMA不完全一致。
 
 ### CubeMX DMA 设置
 
@@ -205,7 +205,7 @@ DMA是独立于CPU的一个硬件控制器，在这里，DMA方式可以承担�
 
 <p align="center"><img src="images/24-DMA流选择.png" alt="24 DMA流选择" width="276"></p>
 
-这里是选择DMA通道，DMA1，DMA2各有8个通道，随便选，别用重了就行。
+这里是选择DMA通道，这里SPI1可以使用DMA1，DMA2，各有8个通道，随便选，别用重了就行。
 
 <p align="center"><img src="images/25-DMA传输方向.png" alt="25 DMA传输方向" width="297"></p>
 
