@@ -69,7 +69,7 @@ NSS由我们自己找空闲引脚用输出模式充当（默认NSS引脚类型�
 
 第二个是波特率，由上图频率分频后得到，在选择波特率时，要同时考虑到从机的承受能力（手册会提及），硬件电路的承受能力等，不能一味的拉最高。
 
-第三个是时钟极性，SPI是同步通信，但只有在移位寄存器需要转的时候始终才会开始跳动，没有通信时默认状态可以选择低电平（Low）或高电平（High）。
+第三个是时钟极性，SPI是同步通信，但只有在移位寄存器需要转的时候始终才会开始跳动，没有通信时时钟线默认状态可以选择低电平（Low）或高电平（High）。
 
 第四个是时钟相位，就是选择在第一个跳变边沿时取样（1 Edge）还是在第二个跳变边沿取样（2 Edge）。
 
@@ -113,7 +113,7 @@ NSS由我们自己找空闲引脚用输出模式充当（默认NSS引脚类型�
 
 和发送函数很像，第二个参数是用来放接收到的数据的变量/数组的地址。
 
-**注意1：**&#x8FD9;里接收数组必须是uint8_t类型的，因为函数定义第二个参数是uint8_t *类型。     那么能定义一个int数组然后在函数里填参时强行转换成uint8_t吗？不行，因为数组的数据类型只决定了在调用时如何断句，与写入无关，写入时数据会默认按本类型断句写入，新数据不会帮你自动跳到下一个数据应该在的位置，比如收到4个uint8_t就会塞进int的前四个字节（对应第一个数据位）。      总之，我们必须保证写入的数据的类型必须和数组本身类型相一致。
+**注意1：**这里接收数组必须是uint8_t类型的，因为函数定义第二个参数是uint8_t *类型。     那么能定义一个int数组然后在函数里填参时强行转换成uint8_t吗？不行，因为数组的数据类型只决定了在调用时如何断句，与写入无关，写入时数据会默认按本类型断句写入，新数据不会帮你自动跳到下一个数据应该在的位置，比如收到4个uint8_t就会塞进int的前四个字节（对应第一个数据位）。      总之，我们必须保证写入的数据的类型必须和数组本身类型相一致。
 
 #### 同步收发函数
 
@@ -123,7 +123,7 @@ NSS由我们自己找空闲引脚用输出模式充当（默认NSS引脚类型�
 
 句柄，要发的，来收的，几个帧（收发同步的，这个既是发的帧数也是收的帧数），超时时间
 
-这里就有的讲了
+这里就有的讲了。
 
 #### 为什么需要同步收发
 
@@ -153,49 +153,27 @@ NSS由我们自己找空闲引脚用输出模式充当（默认NSS引脚类型�
 
 CPU不用一直被阻塞，可以节省出一部分时间处理其他任务。
 
-若在MX中打开了他的中断，就会有一个中断回调函数（发送完成回调）
-
-<p align="center"><img src="images/17-发送完成回调.png" alt="17 发送完成回调" width="781"></p>
-
-（当然要自己写）
-
-这个回调函数会在全部数据发完后被调用。
-
 ### 接收中断
 
 然后是接收中断
 
-<p align="center"><img src="images/18-SPI接收中断函数.png" alt="18 SPI接收中断函数" width="750"></p>
+<p align="center"><img src="images/17-SPI接收中断函数.png" alt="17 SPI接收中断函数" width="750"></p>
 
-<p align="center"><img src="images/19-接收中断原理.png" alt="19 接收中断原理" width="900"></p>
-
-依旧有一个回调函数（接收完成回调）
-
-<p align="center"><img src="images/20-接收完成回调.png" alt="20 接收完成回调" width="826"></p>
+<p align="center"><img src="images/18-接收中断原理.png" alt="18 接收中断原理" width="900"></p>
 
 ### 收发完成中断
 
 最后是收发完成中断
 
-<p align="center"><img src="images/21-SPI同步收发中断函数.png" alt="21 SPI同步收发中断函数" width="900"></p>
-
-回调函数
-
-<p align="center"><img src="images/22-同步收发完成回调.png" alt="22 同步收发完成回调" width="825"></p>
-
-在收发完成后调用。
+<p align="center"><img src="images/19-SPI同步收发中断函数.png" alt="19 SPI同步收发中断函数" width="900"></p>
 
 ## DMA 方式
 
-下面学习DMA方式
-
 DMA是独立于CPU的一个硬件控制器，在这里，DMA方式可以承担起在内存和外设数据寄存器（DR）之间搬运数据的功能。H7系列共有4个DMA，各SPI允许使用的DMA不完全一致。
-
-### CubeMX DMA 设置
 
 在SPI的DMA Settings创建DMA通道。
 
-<p align="center"><img src="images/23-DMA请求选择.png" alt="23 DMA请求选择" width="262"></p>
+<p align="center"><img src="images/20-DMA请求选择.png" alt="20 DMA请求选择" width="262"></p>
 
 首先我们要选择的是此DMA通道用于干什么，SPI1_RX就是用于接收，TX是发送。
 
@@ -203,39 +181,81 @@ DMA是独立于CPU的一个硬件控制器，在这里，DMA方式可以承担�
 
 选择后会出现一个看起来很复杂的界面，全都不需要改，但我们稍微了解一下，来一个一个看：
 
-<p align="center"><img src="images/24-DMA流选择.png" alt="24 DMA流选择" width="276"></p>
+1.
+
+<p align="center"><img src="images/21-DMA流选择.png" alt="21 DMA流选择" width="276"></p>
 
 这里是选择DMA通道，这里SPI1可以使用DMA1，DMA2，各有8个通道，随便选，别用重了就行。
 
-<p align="center"><img src="images/25-DMA传输方向.png" alt="25 DMA传输方向" width="297"></p>
+2.
+
+<p align="center"><img src="images/22-DMA传输方向.png" alt="22 DMA传输方向" width="297"></p>
 
 这里是选择搬运方向，图中显示“内存到外设”，这个不用管，选好第一个选项后MX自动配。
 
-<p align="center"><img src="images/26-DMA优先级.png" alt="26 DMA优先级" width="277"></p>
+3.
+
+<p align="center"><img src="images/23-DMA优先级.png" alt="23 DMA优先级" width="277"></p>
 
 这是优先级，当一个DMA有多个通道都要搬消息，按这个裁决。同优先级的，通道标号小的先。
 
-<p align="center"><img src="images/27-DMA模式.png" alt="27 DMA模式" width="334"></p>
+4.
+
+<p align="center"><img src="images/24-DMA模式.png" alt="24 DMA模式" width="334"></p>
 
 这里是选择模式，普通模式（Normal）就是一次函数只搬一轮，
 
-<p align="center"><img src="images/28-DMA循环模式.png" alt="28 DMA循环模式" width="900"></p>
+<p align="center"><img src="images/25-DMA循环模式.png" alt="25 DMA循环模式" width="900"></p>
 
 通常都是用普通模式。
 
-<p align="center"><img src="images/29-FIFO开关.png" alt="29 FIFO开关" width="508"></p>
+5.
 
-<p align="center"><img src="images/30-FIFO原理.png" alt="30 FIFO原理" width="900"></p>
+<p align="center"><img src="images/26-FIFO开关.png" alt="26 FIFO开关" width="508"></p>
+
+<p align="center"><img src="images/27-FIFO原理.png" alt="27 FIFO原理" width="900"></p>
 
 简单来说，FIFO可以在总线繁忙的情况下有效提高总线利用率，是传输大量数据的情况下可能会用到的，一般用不到，具体你再自己了解。
 
-<p align="center"><img src="images/31-地址增量与数据宽度.png" alt="31 地址增量与数据宽度" width="570"></p>
+6.
 
-<p align="center"><img src="images/32-DMA传输细节.png" alt="32 DMA传输细节" width="900"></p>
+<p align="center"><img src="images/28-地址增量与数据宽度.png" alt="28 地址增量与数据宽度" width="570"></p>
 
-<p align="center"><img src="images/33-DMA同步设置.png" alt="33 DMA同步设置" width="900"></p>
+<p align="center"><img src="images/29-DMA传输细节.png" alt="29 DMA传输细节" width="900"></p>
+
+7.
+
+<p align="center"><img src="images/30-DMA同步设置.png" alt="30 DMA同步设置" width="900"></p>
 
 这是高级东西了，前面的区域，以后再来探索吧~
+
+## 回调函数
+
+下面学习SPI的回调函数
+
+若在MX中打开了他的中断，就可以使用中断回调函数。
+
+共有三个回调函数，可以被中断和DMA的函数触发。
+
+### 发送完成回调
+
+<p align="center"><img src="images/31-SPI发送完成回调.png" alt="31 SPI发送完成回调" width="781"></p>
+
+（当然要自己写）
+
+这个回调函数会在全部数据发完后被调用。
+
+### 接收完成回调
+
+<p align="center"><img src="images/32-SPI接收完成回调.png" alt="32 SPI接收完成回调" width="826"></p>
+
+这个回调函数会在全部数据接收完后被调用。
+
+### 同步收发完成回调
+
+<p align="center"><img src="images/33-SPI同步收发完成回调.png" alt="33 SPI同步收发完成回调" width="825"></p>
+
+在收发完成后调用。
 
 ## 生成代码
 
