@@ -611,6 +611,8 @@ os接口没有封装相关函数，因为太简单了没有必要，我们直接
 
 ![插图](FreeRTOS_assets/image61.png)
 
+uint32_t那里有时会写成UBaseType_t，因为UBaseType_t才是原本它的返回类型，但UBaseType_t就是32位，所以写成uint32也没啥
+
 **软件定时器**
 
 硬件定时器的数量是有限的，我们可以使用软件定时器。
