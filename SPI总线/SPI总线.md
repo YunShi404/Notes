@@ -181,25 +181,25 @@ DMA是独立于CPU的一个硬件控制器，在这里，DMA方式可以承担�
 
 选择后会出现一个看起来很复杂的界面，全都不需要改，但我们稍微了解一下，来一个一个看：
 
-1.
+1. 
 
 <p align="center"><img src="images/21-DMA流选择.png" alt="21 DMA流选择" width="276"></p>
 
 这里是选择DMA通道，这里SPI1可以使用DMA1，DMA2，各有8个通道，随便选，别用重了就行。
 
-2.
+2. 
 
 <p align="center"><img src="images/22-DMA传输方向.png" alt="22 DMA传输方向" width="297"></p>
 
 这里是选择搬运方向，图中显示“内存到外设”，这个不用管，选好第一个选项后MX自动配。
 
-3.
+3. 
 
 <p align="center"><img src="images/23-DMA优先级.png" alt="23 DMA优先级" width="277"></p>
 
 这是优先级，当一个DMA有多个通道都要搬消息，按这个裁决。同优先级的，通道标号小的先。
 
-4.
+4. 
 
 <p align="center"><img src="images/24-DMA模式.png" alt="24 DMA模式" width="334"></p>
 
@@ -209,7 +209,7 @@ DMA是独立于CPU的一个硬件控制器，在这里，DMA方式可以承担�
 
 通常都是用普通模式。
 
-5.
+5. 
 
 <p align="center"><img src="images/26-FIFO开关.png" alt="26 FIFO开关" width="508"></p>
 
@@ -217,13 +217,13 @@ DMA是独立于CPU的一个硬件控制器，在这里，DMA方式可以承担�
 
 简单来说，FIFO可以在总线繁忙的情况下有效提高总线利用率，是传输大量数据的情况下可能会用到的，一般用不到，具体你再自己了解。
 
-6.
+6. 
 
 <p align="center"><img src="images/28-地址增量与数据宽度.png" alt="28 地址增量与数据宽度" width="570"></p>
 
 <p align="center"><img src="images/29-DMA传输细节.png" alt="29 DMA传输细节" width="900"></p>
 
-7.
+7. 
 
 <p align="center"><img src="images/30-DMA同步设置.png" alt="30 DMA同步设置" width="900"></p>
 
@@ -271,4 +271,4 @@ Generate code！
 
 <p align="center"><img src="images/34-SPI与DMA内存访问范围.png" alt="34 SPI与DMA内存访问范围" width="900"></p>
 
-要记得用正确的地址。
+要记得用正确的地址。（这里好像不太对，你把数据手册给AI看然后让他帮你看吧，md文件不好改图片）
