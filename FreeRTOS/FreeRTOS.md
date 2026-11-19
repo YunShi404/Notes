@@ -146,6 +146,14 @@ CubeMX会给我们一个默认任务，双击已有任务可以打开参数界�
 
 osDelay（）函数就是让任务进入阻塞态一定时间，括号内填数字，单位tick(1tick通常是1ms，tick可以在代码里手动改变)
 
+vTaskDelay函数
+
+是freertos的原生函数，osdelay就是对它安全包装了一下
+
+3.vTaskDelayUntil
+
+![vTaskDelayUntil](FreeRTOS_assets/vTaskDelayUntil.png)
+
 x.其他阻塞情况在下面的学习中我们会逐步遇到
 
 ### 挂起态
